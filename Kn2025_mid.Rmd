@@ -1,6 +1,6 @@
 ---
-title: "KN2025_regress"
-author: "PTK"
+title: "KN2025_Mid"
+author: "201124-227985"
 date: "2025-04-17"
 output: html_document
 ---
@@ -11,7 +11,18 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## R Markdown
 
-1. 갈톤(Galton)의 ‘회귀’ 개념을 설명하시오. 또한 현대 통계학에서의 회귀라는 용어와 어떤 점에서 차이를 가지는지 논하시오.
+#### 1. 갈톤(Galton)의 ‘회귀’ 개념을 설명하시오. 또한 현대 통계학에서의 회귀라는 용어와 어떤 점에서 차이를 가지는지 논하시오.
+
+
+#### 2. data(mtcars) 명령어로 R의 내장 데이터셋 “mtcars”를 불러오시오. 이 데이터는 1974년 Motor Trend US 잡지에 실린 1973~1974년형 자동차 32종의 연비(결과변수)와 10가지 특성(설명변수)을 담고 있다. 본 과제에서는 아직 범주형 자료 분석 방법을 학습하지 않았으므로, 모든 설명변수는 연속형으로 가정하고 진행한다.
+
+
+
+####  1) 연비를 가장 잘 예측하는 단순회귀모형을 충분한 근거와 함께 제시하시오. 구체적으로, 10가지 설명변수 중에서 해당 변수를 선택한 근거를 제시하시오.
+  
+####  2) 위의 단순회귀모형에서 연비 예측에 추가적으로 도움이 되는 변수를 하나 더 추가하여 중회귀모형을 적합하고자 한다. 이 상황에서 가장 도움이 되는 추가 변수를 선정하시오. 마찬가지로 해당 변수를 선택한 근거를 제시하시오. (7점)
+
+####  3) 위의 중회귀모형에서 각 회귀변수들의 추정값에 대한 해석을 제시하시오. 또한, 동일한 모형에 대해 표준화된 중회귀분석을 추가로 수행하고, 그 결과에 대해서도 각 회귀변수들의 추정값을 해석하시오. 만약 표준화되었을 때 회귀계수의 해석이 적절치 않은 경우가 있다면, 그 이유를 설명하시오. (7점)
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
@@ -19,8 +30,11 @@ When you click the **Knit** button a document will be generated that includes bo
 
 ```{r cars}
 data(mtcars)
-summary(mtcars)
-summary(cars)
+# help(mtcars)
+str(mtcars)
+
+head(mtcars)
+
 ```
 
 ## Including Plots
@@ -29,6 +43,20 @@ You can also embed plots, for example:
 
 ```{r pressure, echo=FALSE}
 plot(pressure)
+
+require(graphics)
+pairs(mtcars, main = "mtcars data", gap = 1/4)
+coplot(mpg ~ disp | as.factor(cyl), data = mtcars,
+       panel = panel.smooth, rows = 1)
+## possibly more meaningful, e.g., for summary() or bivariate plots:
+mtcars2 <- within(mtcars, {
+   vs <- factor(vs, labels = c("V", "S"))
+   am <- factor(am, labels = c("automatic", "manual"))
+   cyl  <- ordered(cyl)
+   gear <- ordered(gear)
+   carb <- ordered(carb)
+})
+summary(mtcars2)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
