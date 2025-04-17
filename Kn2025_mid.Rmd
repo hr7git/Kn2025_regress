@@ -29,11 +29,20 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r cars}
+library(ggplot2)
 data(mtcars)
 # help(mtcars)
 str(mtcars)
 
 head(mtcars)
+
+# qplot(disp,cyl)
+
+require(graphics)
+pairs(mtcars, main = "mtcars data", gap = 1/4)
+coplot(mpg ~ disp | as.factor(cyl), data = mtcars,
+       panel = panel.smooth, rows = 1)
+
 
 ```
 
@@ -42,12 +51,7 @@ head(mtcars)
 You can also embed plots, for example:
 
 ```{r pressure, echo=FALSE}
-plot(pressure)
 
-require(graphics)
-pairs(mtcars, main = "mtcars data", gap = 1/4)
-coplot(mpg ~ disp | as.factor(cyl), data = mtcars,
-       panel = panel.smooth, rows = 1)
 ## possibly more meaningful, e.g., for summary() or bivariate plots:
 mtcars2 <- within(mtcars, {
    vs <- factor(vs, labels = c("V", "S"))
