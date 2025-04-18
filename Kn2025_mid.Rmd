@@ -56,11 +56,13 @@ pairs(~ mpg + disp + hp + drat + wt,
 
  위의 data 로 Simple Linear Regression
 ```{r }
+mpg_1st = lm(mpg ~ disp + hp + drat + wt, data = mtcars)
 mpg_disp = lm(mpg ~ disp, data = mtcars)
 mpg_hp   = lm(mpg ~ hp,   data = mtcars)
 mpg_drat = lm(mpg ~ drat, data = mtcars)
 mpg_wt   = lm(mpg ~ wt,   data = mtcars)
 
+summary(mpg_1st)
 summary(mpg_disp)
 summary(mpg_hp)
 summary(mpg_drat)
