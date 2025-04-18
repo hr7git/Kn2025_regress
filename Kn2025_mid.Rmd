@@ -11,10 +11,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## R Markdown
 
-#### 1. 갈톤(Galton)의 ‘회귀’ 개념을 설명하시오. 또한 현대 통계학에서의 회귀라는 용어와 어떤 점에서 차이를 가지는지 논하시오.
+### 1. 갈톤(Galton)의 ‘회귀’ 개념을 설명하시오. 또한 현대 통계학에서의 회귀라는 용어와 어떤 점에서 차이를 가지는지 논하시오.
+#### Galton(1822~1922)은 부모와 자녀의 키 상관관계 연구중 극단적인 키는 자식세대에서 평균에 가까워지는 현상을 발견하고서 이를 "회귀(regression)"이라 명명한다. 현대 통계학에서는 갈톤의 '원래자리로 돌아간다'의미보다는 '한 변수가 다른 변수에 미치는 영향을 추정하는 통계기법'을 통칭하는 용어로 사용한다.
 
 
-#### 2. data(mtcars) 명령어로 R의 내장 데이터셋 “mtcars”를 불러오시오. 이 데이터는 1974년 Motor Trend US 잡지에 실린 1973~1974년형 자동차 32종의 연비(결과변수)와 10가지 특성(설명변수)을 담고 있다. 본 과제에서는 아직 범주형 자료 분석 방법을 학습하지 않았으므로, 모든 설명변수는 연속형으로 가정하고 진행한다.
+### 2. data(mtcars) 명령어로 R의 내장 데이터셋 “mtcars”를 불러오시오. 이 데이터는 1974년 Motor Trend US 잡지에 실린 1973~1974년형 자동차 32종의 연비(결과변수)와 10가지 특성(설명변수)을 담고 있다. 본 과제에서는 아직 범주형 자료 분석 방법을 학습하지 않았으므로, 모든 설명변수는 연속형으로 가정하고 진행한다.
 
 
 
@@ -32,16 +33,44 @@ When you click the **Knit** button a document will be generated that includes bo
 # library(ggplot2)
 data(mtcars)
 # help(mtcars)
-str(mtcars)
+# str(mtcars)
 # head(mtcars)
 # qplot(disp,cyl)
 require(graphics)
 pairs(mtcars, main = "mtcars data", gap = 1/4)
 # coplot(mpg ~ disp | as.factor(cyl), data = mtcars,
 #        panel = panel.smooth, rows = 1)
+```
 
-mpg_cyl = lm(mpg ~ cyl, data = mtcars)
-summary(mpg_cyl)
+
+### 위의 plot 행렬에서 연속형(disp,hp,drat,wt,qsec) include
+
+```{r }
+
+pairs(~ mpg + disp + hp + drat + wt + qsec, 
+      data = mtcars, main = "mtcars data", gap = 1/4)
+
+
+```
+
+### 위의 plot 행렬에서 qsec 은 분포가 산만해서 제외하고 
+### Simple Linear Regression
+```{r }
+
+# data(mtcars)
+mpg_disp = lm(mpg ~ disp, data = mtcars)
+mpg_hp   = lm(mpg ~ hp,   data = mtcars)
+mpg_drat = lm(mpg ~ drat, data = mtcars)
+mpg_wt   = lm(mpg ~ wt,   data = mtcars)
+
+
+summary(mpg_disp)
+summary(mpg_hp)
+summary(mpg_drat)
+summary(mpg_wt)
+
+
+
 ```
 
 ## Including Plots
@@ -62,3 +91,7 @@ summary(mtcars2)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r }
+
+```
