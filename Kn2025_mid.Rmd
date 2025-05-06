@@ -1,6 +1,5 @@
 ---
-title: "KN2025_Mid"
-author: "T wild"
+title: "회귀모형"
 date: "2025-04-17"
 output: html_document
 ---
@@ -9,7 +8,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## mid term paper
+#### mid term paper
 
 #### 1. 갈톤(Galton)의 ‘회귀’ 개념을 설명하시오. 또한 현대 통계학에서의 회귀라는 용어와 어떤 점에서 차이를 가지는지 논하시오.
  Galton(1822~1922)은 부모와 자녀의 키 상관관계 연구중 극단적인 키는 자식세대에서 평균에 가까워지는 현상을 발견하고서 이를 "회귀(regression)"이라 명명한다. 현대 통계학에서는 갈톤의 '원래자리로 돌아간다'의미보다는 '한 변수가 다른 변수에 미치는 영향을 추정하는 통계기법'을 통칭하는 용어로 사용한다.
@@ -26,16 +25,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r cars}
-# library(ggplot2)
 data(mtcars)
-# help(mtcars)
-# str(mtcars)
-# head(mtcars)
-# qplot(disp,cyl)
 require(graphics)
 pairs(mtcars, main = "mtcars data", gap = 1/4)
-# coplot(mpg ~ disp | as.factor(cyl), data = mtcars,
-#        panel = panel.smooth, rows = 1)
 ```
 
 
@@ -46,63 +38,57 @@ pairs(mtcars, main = "mtcars data", gap = 1/4)
 
 
 ```{r }
-
 pairs(~ mpg + disp + hp + drat + wt, 
       data = mtcars, main = "mtcars data", gap = 1/4)
-
-
 ```
 
 
  위의 data 로 Simple Linear Regression
 ```{r }
 mpg_1st = lm(mpg ~ disp + hp + drat + wt, data = mtcars)
-mpg_disp = lm(mpg ~ disp, data = mtcars)
-mpg_hp   = lm(mpg ~ hp,   data = mtcars)
-mpg_drat = lm(mpg ~ drat, data = mtcars)
-mpg_wt   = lm(mpg ~ wt,   data = mtcars)
-
 summary(mpg_1st)
-summary(mpg_disp)
-summary(mpg_hp)
-summary(mpg_drat)
-summary(mpg_wt)
 ```
- 위의 결과중에서 Multiple R-squared 를 비교해보면 'wt'의 경우에 0.7528로 가장 높은 값이 나오는 것을 알 수 있다. 그래서 wt 로 선택한다.
+ 위의 결과중에서 'wt'의 경우에 유의확률이 0.00327 가장 낮은 값이 나오는 것을 알 수 있다. 그래서 wt 로 선택한다.
 
 ---
 
 ####  2) 위의 단순회귀모형에서 연비 예측에 추가적으로 도움이 되는 변수를 하나 더 추가하여 중회귀모형을 적합하고자 한다. 이 상황에서 가장 도움이 되는 추가 변수를 선정하시오. 마찬가지로 해당 변수를 선택한 근거를 제시하시오. (7점)
 
 ```{r }
-mpg_multi = lm(mpg ~ disp + wt, data = mtcars)
-
+mpg_wt   = lm(mpg ~ wt,   data = mtcars)
+mpg_multi = lm(mpg ~ hp + wt, data = mtcars)
+summary(mpg_wt)
 summary(mpg_multi)
-
 ```
+ 1)첫번째 회귀식에서 hp 의 유의확률이 0.00576 로 두번째로 낮아서 선택했다.
+ 2)Adjusted R-squared 를 비교해보면 'wt'의 경우에 0.7446로 
+ hp 를 포함한 경우에는 0.8148 로 증가했다.
+
+---
 
 ####  3) 위의 중회귀모형에서 각 회귀변수들의 추정값에 대한 해석을 제시하시오. 또한, 동일한 모형에 대해 표준화된 중회귀분석을 추가로 수행하고, 그 결과에 대해서도 각 회귀변수들의 추정값을 해석하시오. 만약 표준화되었을 때 회귀계수의 해석이 적절치 않은 경우가 있다면, 그 이유를 설명하시오. (7점)
 
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-
-## possibly more meaningful, e.g., for summary() or bivariate plots:
-mtcars2 <- within(mtcars, {
-   vs <- factor(vs, labels = c("V", "S"))
-   am <- factor(am, labels = c("automatic", "manual"))
-   cyl  <- ordered(cyl)
-   gear <- ordered(gear)
-   carb <- ordered(carb)
-})
-summary(mtcars2)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+1) 위의 결과물에서 
+intercept  : Y 축과의 절편은 37.22727
+hp 기울기  : -0.03177  유의확률 0.00145
+WT 기울기  : -3.87783  유의확률 1.12e-06
+Adjusted R-squared:  0.8148
 
 ```{r }
-
+mpg_multi = lm(mpg ~ wt + drat, data = mtcars)
+summary(mpg_multi)
 ```
+
+2) 위의 경우처럼 drat 을 추가하는 경우에는 유의확률이 0.330854이고
+Adjusted R-squared:  0.7444 로 wt만 있는 경우보다 오히려 감소함을 알 수 있다.
+
+3) 또한 위의 중회귀식에서 
+Multiple R-squared 만 비교해보면  
+0.7528 에서 0.7609 로 증가한 것으로 보이나 
+Adjusted R-squared  로 비교하면 
+0.7446 에서 0.7444 로 오히려 감소했음을 알 수 있다. 
+즉 중회귀식에서 독립변수를 증가하면 그것이 유의하든 안하든 개수가 증가하면
+Multiple R-squared 가 증가하는 단점을 가지고 있어서 이러한 단점을 보강하기 위해서
+수정된 식으로 Adjusted R-squared 를 사용하여 비교한다.
+
+
